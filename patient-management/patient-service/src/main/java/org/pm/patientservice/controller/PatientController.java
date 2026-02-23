@@ -1,9 +1,9 @@
 package org.pm.patientservice.controller;
 
-import jakarta.validation.Valid;
 import jakarta.validation.groups.Default;
 import org.pm.patientservice.dto.PatientRequestDTO;
 import org.pm.patientservice.dto.PatientResponseDTO;
+import org.pm.patientservice.dto.validators.CreatePatientValidationGroup;
 import org.pm.patientservice.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,14 +30,20 @@ public class PatientController {
     }
 
     @PostMapping
-    public ResponseEntity<PatientResponseDTO> createPatient(@Valid @RequestBody PatientRequestDTO patientRequestDTO) {
+    public ResponseEntity<PatientResponseDTO> createPatient(@Validated({Default.class, CreatePatientValidationGroup.class}) @RequestBody PatientRequestDTO patientRequestDTO) {
         PatientResponseDTO patient = patientService.createPatient(patientRequestDTO);
         return ResponseEntity.ok().body(patient);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PatientResponseDTO> updatePatient(@PathVariable UUID id, @Validated(Default.class) @RequestBody PatientRequestDTO patientRequestDTO) {
+    public ResponseEntity<PatientResponseDTO> updatePatient(@PathVariable UUID id, @Validated({Default.class}) @RequestBody PatientRequestDTO patientRequestDTO) {
         PatientResponseDTO patient = patientService.updatePatient(id, patientRequestDTO);
         return ResponseEntity.ok().body(patient);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePatient(@PathVariable UUID id) {
+        patientService.deletePatient(id);
+        return ResponseEntity.noContent().build();
     }
 }
