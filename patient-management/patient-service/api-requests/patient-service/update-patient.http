@@ -1,0 +1,9 @@
+### PUT updates a new patient entity
+PUT http://localhost:4000/patients/6d7a8f3b-2c5e-4a1d-9b8c-3f6e7d2a4b1c
+Content-Type: application/json
+
+{
+  "name": "Olivia Che",
+  "address": "567 Pacific Heights, San Francisco",
+  "dateOfBirth": "1995-07-09"
+}
